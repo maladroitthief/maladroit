@@ -12,6 +12,11 @@ func main() {
 
 	mux.HandleFunc("/", indexHandler)
 
+	mux.Handle(
+    "/static/",
+    http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))),
+  )
+
 	s := &http.Server{
 		Addr:           ":8080",
 		Handler:        mux,
@@ -24,6 +29,6 @@ func main() {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-  tmpl := template.Must(template.ParseFiles("web/app/index.html"))
-  tmpl.Execute(w, "")
+	tmpl := template.Must(template.ParseFiles("web/app/index.html"))
+	tmpl.Execute(w, "")
 }
